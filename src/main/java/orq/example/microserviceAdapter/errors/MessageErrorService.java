@@ -1,8 +1,12 @@
 package orq.example.microserviceAdapter.errors;
 
 import org.apache.camel.Exchange;
+import org.springframework.stereotype.Component;
 
-//Обработчик ошибки при пустом сообщении
+/*
+Обработчик ошибки при пустом сообщении
+ */
+@Component
 public class MessageErrorService {
     public void messageIsEmpty(Exchange exchange) {
         exchange.getIn().setBody("Message is empty");

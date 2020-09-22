@@ -27,7 +27,7 @@ public class MessageToB {
         this.createdDt = createdDt;
     }
 
-    public String getCurrentTemp() throws IOException {
+    public String getCurrentTemp() {
         return currentTemp;
     }
 

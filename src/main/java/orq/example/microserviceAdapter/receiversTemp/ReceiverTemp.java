@@ -1,12 +1,13 @@
 package orq.example.microserviceAdapter.receiversTemp;
 
-import org.springframework.stereotype.Service;
-
-import java.io.IOException;
+import org.springframework.stereotype.Component;
 
 // Базовый интерфейс для поставщиков температуры
 
-@Service
+@Component
 public interface ReceiverTemp {
-    String getTemperature(String lat, String lon) throws IOException;
+
+    String getTemperature(String lat, String lon);
+
+    String getName();
 }

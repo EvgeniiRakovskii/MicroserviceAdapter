@@ -1,11 +1,14 @@
 package orq.example.microserviceAdapter.jsonserializers;
 
 import com.google.gson.*;
+import org.springframework.stereotype.Component;
 import orq.example.microserviceAdapter.message.MessageToB;
 
 import java.lang.reflect.Type;
 
-//Настройка сериализации для корректного преобразования POJO Message B в Json Message B
+//Настройка сериализации для корректного преобразования POJO AdapterFromAtoB в json
+
+@Component
 public class StepSerializer implements JsonSerializer<MessageToB> {
     public JsonElement serialize(MessageToB src,
                                  Type typeOfSrc,

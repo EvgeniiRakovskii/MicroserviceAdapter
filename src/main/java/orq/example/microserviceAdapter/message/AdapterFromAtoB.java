@@ -1,19 +1,21 @@
 package orq.example.microserviceAdapter.message;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import orq.example.microserviceAdapter.receiversTemp.ReceiverTemp;
-
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
-//Реализовал паттерн адаптер для преобразования сообщения из Service А в  Service В
+//Реализация паттерна Адаптер для преобразования полученного сообщения из ServiceА в ServiceВ
 
 @Component
 public class AdapterFromAtoB extends MessageToB {
-    private static ReceiverTemp receiverTemp;
 
+    //Платформа с которой получаем температуру, указываем в конфигурационном файле
+    private static String sourceOfWeather;
+    private static Map<String, ReceiverTemp> sourcesOfWeather;
     private MessageA messageA;
 
     public AdapterFromAtoB(MessageA messageA) {
@@ -21,8 +23,13 @@ public class AdapterFromAtoB extends MessageToB {
     }
 
     @Autowired
-    public void setReceiverTemp(@Qualifier("climacell") ReceiverTemp receiverTemp) {
-        this.receiverTemp = receiverTemp;
+    public void setWeatherMap(Map<String, ReceiverTemp> map) {
+        sourcesOfWeather = map;
+    }
+
+    @Value("${weatherProvider}")
+    public void setSourceOfWeather(String sourceOfWeather) {
+        AdapterFromAtoB.sourceOfWeather = sourceOfWeather;
     }
 
     @Override
@@ -36,10 +43,11 @@ public class AdapterFromAtoB extends MessageToB {
     }
 
     @Override
-    public String getCurrentTemp() throws IOException {
+    public String getCurrentTemp() {
+
         String latitude = messageA.getCoordinates().get("latitude");
         String longitude = messageA.getCoordinates().get("longitude");
-        return receiverTemp.getTemperature(latitude, longitude);
+        return sourcesOfWeather.get(sourceOfWeather).getTemperature(latitude, longitude);
     }
 
 }

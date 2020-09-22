@@ -18,38 +18,25 @@ tasks.withType(Test) {
 }
 
 
-    dependencies {
-        implementation 'org.apache.camel:camel-core:3.4.2'
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        testImplementation('org.springframework.boot:spring-boot-starter-test') {
-            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-        }
-        compile 'com.squareup.okhttp3:okhttp:4.8.1'
-        compile 'com.googlecode.json-simple:json-simple:1.1.1'
-        compile 'org.json:json:20200518'
-        compile 'org.apache.camel.springboot:camel-rest-starter:3.5.0'
-        compile 'org.apache.camel.springboot:camel-servlet-starter:3.5.0'
-        compile 'org.apache.camel.springboot:camel-jackson-starter:3.5.0'
-        compile 'org.apache.camel.springboot:camel-jsonpath-starter:3.5.0'
-        compile 'org.apache.camel:camel-direct:3.5.0'
-        compile 'org.apache.camel:camel-http:3.5.0'
-        compile 'com.google.code.gson:gson:2.8.6'
-        compile 'org.apache.camel:camel-test-spring:3.5.0'
+dependencies {
+    implementation 'org.apache.camel:camel-core:3.4.2'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-        compile 'org.apache.camel:camel-test-spring-junit5:3.5.0'
-        compile 'org.apache.camel:camel-spring-javaconfig:3.5.0'
-        compile 'com.googlecode.json-simple:json-simple:1.1.1'
-        compile 'org.junit.jupiter:junit-jupiter:5.7.0'
-        compile 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-        compile 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-        compile 'org.apache.camel:camel-test-junit5:3.5.0'
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0'
+    compile 'com.squareup.okhttp3:okhttp:4.8.1'
+    compile 'org.apache.camel.springboot:camel-rest-starter:3.5.0'
+    compile 'org.apache.camel.springboot:camel-servlet-starter:3.5.0'
+    compile 'org.apache.camel.springboot:camel-jackson-starter:3.5.0'
+    compile 'org.apache.camel.springboot:camel-jsonpath-starter:3.5.0'
+    compile 'org.apache.camel:camel-direct:3.5.0'
+    compile 'org.apache.camel:camel-http:3.5.0'
 
-        testCompile 'org.junit.platform:junit-platform-commons:1.5.0'
-        testCompile 'org.junit.platform:junit-platform-engine:1.5.0'
-        testCompile('org.mockito:mockito-junit-jupiter:3.0.0') {
-            exclude group: 'org.junit.jupiter'
-        }
-        testImplementation 'org.junit.platform:junit-platform-commons:1.5.2'
-    }
+    compile 'org.json:json:20200518'
+    compile 'com.google.code.gson:gson:2.8.6'
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    runtimeOnly('org.apache.camel:camel-spring-javaconfig:3.5.0')
+    testImplementation('org.apache.camel:camel-test-spring-junit5:3.5.0')
+
+
+}
 

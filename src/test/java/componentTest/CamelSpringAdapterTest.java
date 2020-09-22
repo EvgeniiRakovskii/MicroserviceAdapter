@@ -25,8 +25,11 @@ public class CamelSpringAdapterTest {
     @Produce("direct:modify")
     protected ProducerTemplate testProducer;
 
-    //Тестирование корректного формата входящего сообщения
-    //Отправляем корректное сообщение и ждем его получения моковой точкой
+    /*
+    Тестирование правильного формата входящего сообщения.
+    Отправляем сообщение и ждем его получения моковой точкой.
+    Проверяем что оно прошло все проверки и корректно преобразовалась.
+     */
     @Test
     public void testRightMessage() throws InterruptedException {
         endpoint.expectedMessageCount(1);
@@ -37,11 +40,10 @@ public class CamelSpringAdapterTest {
                 "\"longitude\": \"52.52\"\n" +
                 "}\n" + "}");
         endpoint.assertIsSatisfied();
-
     }
 
     //Тестирование пустого входящего сообщения
-    //Отправляем сообщение и сравниваем с ответом от сервера
+    //Отправляем сообщение и сравниваем результат с ответом от сервера
     @Test
     public void testEmptyMessage() {
 

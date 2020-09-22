@@ -14,8 +14,15 @@ import orq.example.microserviceAdapter.processors.ProcessorJson;
 @Component
 public class AdapterRouter extends RouteBuilder {
 
-    // Обработчик Json для Camel route
+    // Обработчик входного сообщения для Camel route
     private ProcessorJson processorJson;
+    // Обработчик ошибки для пустого сообщения
+    private MessageErrorService messageErrorService;
+
+    @Autowired
+    void setMessageErrorService(MessageErrorService messageErrorService) {
+        this.messageErrorService = messageErrorService;
+    }
 
     @Autowired
     public void setProcessorJson(ProcessorJson processorJson) {
@@ -29,11 +36,12 @@ public class AdapterRouter extends RouteBuilder {
                 .component("servlet")
                 .bindingMode(RestBindingMode.json);
 
-        // Отлавливаю все исключения и возвращаю ошибку неправильный запрос
+        // Отлавливаю все исключения и возвращаю неправильный запрос
         onException(Exception.class)
                 .handled(true)
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(400))
                 .setHeader(Exchange.CONTENT_TYPE, constant("text/plain"))
+                .log(LoggingLevel.INFO, "Exception is ${body}!")
                 .setBody().constant("Something was wrong");
 
 
@@ -49,9 +57,9 @@ public class AdapterRouter extends RouteBuilder {
                 //фильтрация сообщения с признаком lng отличным от ru
                 .when().jsonpath("$.[?(@.lng != 'ru')]").setBody(constant(""))
                 //обработка ошибки пустого сообщения
-                .when().jsonpath("$.[?(@.msg == '')]").bean(new MessageErrorService(), "messageIsEmpty")
+                .when().jsonpath("$.[?(@.msg == '')]").bean(messageErrorService, "messageIsEmpty")
                 .otherwise()
-                .log(LoggingLevel.INFO, "The body after filtration is ${body}!")
+                .log(LoggingLevel.INFO, "The input body after filtration is ${body}!")
                 .process(processorJson)
                 //убираем хедеры чтобы корректно отправить json на другой http
                 .removeHeader(Exchange.HTTP_URI)
