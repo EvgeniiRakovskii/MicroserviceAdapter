@@ -7,7 +7,7 @@ import okhttp3.Response;
 import java.io.IOException;
 
 /*
-Абстрактный класс для поставщиков погоды
+Абстрактный класс для поставщиков погоды.
 Для добавления нового поставщика необходимо:
 Создать класс, унаследовать его от AbstractWeatherProvider,
 переопределить метод initMethod, пометить его аннтоацией @PostConstruct, присвоить в нем значения полям name, url
@@ -33,7 +33,7 @@ public abstract class AbstractWeatherProvider implements ReceiverTemp {
             return parseJsonForTemp(responseBody);
         } catch (Exception e) {
             e.printStackTrace();
-           return null;
+            return null;
         }
     }
 

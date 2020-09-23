@@ -5,6 +5,7 @@ import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import orq.example.microserviceAdapter.errors.MessageErrorService;
 import orq.example.microserviceAdapter.processors.ProcessorJson;
@@ -12,11 +13,12 @@ import orq.example.microserviceAdapter.processors.ProcessorJson;
 // Camel route for adapter
 
 @Component
+@Scope("prototype")
 public class AdapterRouter extends RouteBuilder {
 
-    // Обработчик входного сообщения для Camel route
+    // Обработка входного сообщения для Camel route
     private ProcessorJson processorJson;
-    // Обработчик ошибки для пустого сообщения
+    // Обработка ошибки для пустого сообщения
     private MessageErrorService messageErrorService;
 
     @Autowired
@@ -45,7 +47,7 @@ public class AdapterRouter extends RouteBuilder {
                 .setBody().constant("Something was wrong");
 
 
-        //Начало маршрута, пост запрос на отправку
+        //Начало маршрута, принимаем POST запросы по указанному адресу в properties
         rest().post("{{addressAdapter}}").consumes("application/json")
                 .to("direct:modify");
 

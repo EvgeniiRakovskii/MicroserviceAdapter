@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import orq.example.microserviceAdapter.jsonserializers.StepSerializer;
 import orq.example.microserviceAdapter.message.AdapterFromAtoB;
@@ -27,6 +28,12 @@ public class ProcessorJson implements Processor {
 
     private Gson gson;
     private StepSerializer stepSerializer;
+    private ApplicationContext context;
+
+    @Autowired
+    public void setContext(ApplicationContext context) {
+        this.context = context;
+    }
 
     @Autowired
     public void setStepSerializer(StepSerializer stepSerializer) {
@@ -46,7 +53,8 @@ public class ProcessorJson implements Processor {
         MessageA messageA = gson.fromJson(exchange.getIn().getBody(String.class), MessageA.class);
 
         //создаем POJO сообщения для отправки в ServiceB
-        MessageToB messageToB = new AdapterFromAtoB(messageA);
+        //      MessageToB messageToB = new AdapterFromAtoB(messageA);
+        MessageToB messageToB = context.getBean(AdapterFromAtoB.class, messageA);
 
         //Преобразуем POJO Message to Service B в Json и помещаем его в тело Exchange Сamel route
         String json = gson.toJson(messageToB);

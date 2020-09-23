@@ -2,6 +2,7 @@ package orq.example.microserviceAdapter.message;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import orq.example.microserviceAdapter.receiversTemp.ReceiverTemp;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.Map;
 //Реализация паттерна Адаптер для преобразования полученного сообщения из ServiceА в ServiceВ
 
 @Component
+@Scope("prototype")
 public class AdapterFromAtoB extends MessageToB {
 
     //Платформа с которой получаем температуру, указываем в конфигурационном файле

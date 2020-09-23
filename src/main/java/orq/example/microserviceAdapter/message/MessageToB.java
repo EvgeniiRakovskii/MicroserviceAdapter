@@ -1,7 +1,7 @@
 package orq.example.microserviceAdapter.message;
+
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 
 //POJO сообщения для отправки в Service B
 

@@ -4,7 +4,7 @@ import org.apache.camel.Exchange;
 import org.springframework.stereotype.Component;
 
 /*
-Обработчик ошибки при пустом сообщении
+Обработчик ошибки при пустом входящем сообщении
  */
 @Component
 public class MessageErrorService {

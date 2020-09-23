@@ -13,7 +13,7 @@ import orq.example.microserviceAdapter.Application;
 
 @CamelSpringTest
 @TestPropertySource(locations = "classpath:application.properties")
-@MockEndpointsAndSkip("{{addressOfB}}") // Запрещаем отправку сообщений на Service B во время теста
+@MockEndpointsAndSkip("{{addressOfB}}") // Запрещаем отправку сообщений на реальный Service B во время теста
 @ContextConfiguration(classes = Application.class)
 public class CamelSpringAdapterTest {
 
@@ -28,7 +28,7 @@ public class CamelSpringAdapterTest {
     /*
     Тестирование правильного формата входящего сообщения.
     Отправляем сообщение и ждем его получения моковой точкой.
-    Проверяем что оно прошло все проверки и корректно преобразовалась.
+    Проверяем что оно прошло все проверки и корректно преобразовалось.
      */
     @Test
     public void testRightMessage() throws InterruptedException {
@@ -43,7 +43,7 @@ public class CamelSpringAdapterTest {
     }
 
     //Тестирование пустого входящего сообщения
-    //Отправляем сообщение и сравниваем результат с ответом от сервера
+    //Отправляем сообщение и сравниваем результат с ответом от адаптера
     @Test
     public void testEmptyMessage() {
 
@@ -54,7 +54,7 @@ public class CamelSpringAdapterTest {
     }
 
     //Тестирование входящего сообщения с неккоректным языковым признаком
-    //Отправляем сообщение и сравниваем с ответом от сервера
+    //Отправляем сообщение и сравниваем с ответом от адаптера
     @Test
     public void testLanguage() {
         String wrongLanguage = testProducer.requestBody((Object) ("{\n" + "\"msg\": \"Bye bye\",\n" +
@@ -64,7 +64,7 @@ public class CamelSpringAdapterTest {
     }
 
     //Тестирование входящего сообщения с неправильными параметрами
-    //Отправляем сообщение и сравниваем с ответом от сервера
+    //Отправляем сообщение и сравниваем с ответом от адаптера
     @Test
     public void testWrongBody() {
         String wrongLanguage = testProducer.requestBody((Object) ("{\n" + "\"msg\": \"Bye bye\",\n" +
