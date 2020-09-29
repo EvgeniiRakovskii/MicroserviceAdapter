@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MessageErrorService {
+
     public void messageIsEmpty(Exchange exchange) {
         exchange.getIn().setBody("Message is empty");
         exchange.getIn().setHeader(Exchange.CONTENT_TYPE, "text/plain");

@@ -43,7 +43,7 @@ public class AdapterRouter extends RouteBuilder {
                 .handled(true)
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(400))
                 .setHeader(Exchange.CONTENT_TYPE, constant("text/plain"))
-                .log(LoggingLevel.INFO, "Exception is ${body}!")
+                .log(LoggingLevel.INFO, "Exception is ${exception.message}!")
                 .setBody().constant("Something was wrong");
 
 
@@ -62,6 +62,7 @@ public class AdapterRouter extends RouteBuilder {
                 .when().jsonpath("$.[?(@.msg == '')]").bean(messageErrorService, "messageIsEmpty")
                 .otherwise()
                 .log(LoggingLevel.INFO, "The input body after filtration is ${body}!")
+                // обработка входного сообщения
                 .process(processorJson)
                 //убираем хедеры чтобы корректно отправить json на другой http
                 .removeHeader(Exchange.HTTP_URI)

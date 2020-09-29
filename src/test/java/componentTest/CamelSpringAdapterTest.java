@@ -6,6 +6,8 @@ import org.apache.camel.test.spring.junit5.CamelSpringTest;
 import org.apache.camel.test.spring.junit5.MockEndpointsAndSkip;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import orq.example.microserviceAdapter.Application;
@@ -24,6 +26,12 @@ public class CamelSpringAdapterTest {
     //Промежуточная точка в нашем route
     @Produce("direct:modify")
     protected ProducerTemplate testProducer;
+    private ApplicationContext context;
+
+    @Autowired
+    public void setContext(ApplicationContext context) {
+        this.context = context;
+    }
 
     /*
     Тестирование правильного формата входящего сообщения.
@@ -70,6 +78,11 @@ public class CamelSpringAdapterTest {
         String wrongLanguage = testProducer.requestBody((Object) ("{\n" + "\"msg\": \"Bye bye\",\n" +
                 "\"lng\": \"ru\"\n" + "}"), String.class);
         Assert.assertEquals(wrongLanguage, "Something was wrong");
+
+    }
+
+    @Test
+    public void testWeatherProviders(){
 
     }
 
