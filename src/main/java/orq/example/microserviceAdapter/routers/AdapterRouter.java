@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import orq.example.microserviceAdapter.errors.MessageErrorService;
+import orq.example.microserviceAdapter.processors.ProcessorHeaders;
 import orq.example.microserviceAdapter.processors.ProcessorJson;
 
 // Camel route for adapter
@@ -20,6 +21,13 @@ public class AdapterRouter extends RouteBuilder {
     private ProcessorJson processorJson;
     // Обработка ошибки для пустого сообщения
     private MessageErrorService messageErrorService;
+    // Настройка Headers
+    private ProcessorHeaders processorHeaders;
+
+    @Autowired
+    public void setProcessorHeaders(ProcessorHeaders processorHeaders) {
+        this.processorHeaders = processorHeaders;
+    }
 
     @Autowired
     void setMessageErrorService(MessageErrorService messageErrorService) {
@@ -38,7 +46,7 @@ public class AdapterRouter extends RouteBuilder {
                 .component("servlet")
                 .bindingMode(RestBindingMode.json);
 
-        // Отлавливаю все исключения и возвращаю неправильный запрос
+        //Отлавливаю все исключения и оповещаю о них в ответе
         onException(Exception.class)
                 .handled(true)
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(400))
@@ -62,12 +70,10 @@ public class AdapterRouter extends RouteBuilder {
                 .when().jsonpath("$.[?(@.msg == '')]").bean(messageErrorService, "messageIsEmpty")
                 .otherwise()
                 .log(LoggingLevel.INFO, "The input body after filtration is ${body}!")
-                // обработка входного сообщения
+                //обработка входного сообщения
                 .process(processorJson)
-                //убираем хедеры чтобы корректно отправить json на другой http
-                .removeHeader(Exchange.HTTP_URI)
-                .setHeader(Exchange.HTTP_METHOD, constant("POST"))
-                .setHeader("Content-Type", constant("application/json"))
+                //настройка Headers
+                .process(processorHeaders)
                 .log(LoggingLevel.INFO, "The output body is ${body}!")
                 .to("{{addressOfB}}")
                 .transform().simple("");

@@ -17,7 +17,8 @@ import javax.annotation.PostConstruct;
 Принимает входящее сообщение, обрабатывает его, обогащает данными и передает дальше.
 
 Логика работы:
-реализовал POJO входного и выходного сообщения, внедрил в MessageToB ссылку на MessageA, и в конструкторе задал значения переменным
+реализовал POJO входного и выходного сообщения, внедрил в MessageToB ссылку на MessageA,
+и в конструкторе задал значения переменным
 */
 @Component
 public class ProcessorJson implements Processor {
